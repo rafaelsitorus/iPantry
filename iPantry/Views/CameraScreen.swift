@@ -27,6 +27,7 @@ struct CameraScreen: View {
     @State private var capturedPreview: UIImage?
     @State private var errorMessage: String?
     @State private var showError = false
+    @State private var showNotFoodAlert = false
     @State private var flashAnimation = false
 
     var onComplete: ([MenuItem]) -> Void
@@ -219,6 +220,15 @@ struct CameraScreen: View {
         } message: {
             Text(errorMessage ?? "Something went wrong")
         }
+        .alert("Bukan Makanan 🚫", isPresented: $showNotFoodAlert) {
+            Button("Coba Lagi") {
+                capturedPreview = nil
+                capturedImage = nil
+                cameraManager.startSession()
+            }
+        } message: {
+            Text("Gambar tidak mengandung bahan makanan. Silakan foto bahan masakan seperti sayuran, daging, atau bumbu.")
+        }
     }
 
     private var cameraBoxHeight: CGFloat {
@@ -256,6 +266,14 @@ struct CameraScreen: View {
                 await MainActor.run {
                     isLoading = false
                     onComplete(items)
+                }
+            } catch GeminiError.notFood {
+                await MainActor.run {
+                    isLoading = false
+                    capturedPreview = nil
+                    capturedImage = nil
+                    cameraManager.startSession()
+                    showNotFoodAlert = true
                 }
             } catch {
                 await MainActor.run {

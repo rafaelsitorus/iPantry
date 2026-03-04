@@ -24,10 +24,11 @@ struct SplashView: View {
             .ignoresSafeArea()
 
             VStack(spacing: 20) {
-                Image(systemName: "refrigerator.fill")
-                    .font(.system(size: 90))
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 6)
+                Image("IPantryLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 140, height: 140)
+                    .shadow(color: .black.opacity(0.25), radius: 12, x: 0, y: 6)
 
                 VStack(spacing: 8) {
                     Text("iPantry")

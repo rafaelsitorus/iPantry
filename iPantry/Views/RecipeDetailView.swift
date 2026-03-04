@@ -12,7 +12,7 @@ struct RecipeDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    // Gradient for the header image placeholder
+    // Gradient for the header image https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Flogin%2Fdeviceplaceholder
     private let headerGradient = LinearGradient(
         colors: [
             Color(red: 1.0, green: 0.6, blue: 0.3),
@@ -134,10 +134,14 @@ struct RecipeDetailView: View {
                                         .font(.body)
                                         .foregroundColor(.primary)
                                         .lineSpacing(4)
+                                        .multilineTextAlignment(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.top, 4)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
