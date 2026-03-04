@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class GeminiService {
-    static let apiKey = "AIzaSyDxGzz0nMS-69bYvf4baLVdpzimPTERRNs"
+    static let apiKey = "AIzaSyC9PuKQ6BLpM4jl0lpeTJdGyd7dBXTZKlk"
     
     static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
     

@@ -8,41 +8,31 @@
 import SwiftUI
 import AVFoundation
 
-struct CameraView: UIViewControllerRepresentable {
-    @Binding var capturedImage: UIImage?
-    @Environment(\.dismiss) var dismiss
-    
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        picker.sourceType = .camera
-        picker.cameraCaptureMode = .photo
-        picker.allowsEditing = false
-        return picker
+// MARK: - UIViewRepresentable live camera preview
+
+struct CameraPreviewView: UIViewRepresentable {
+    let session: AVCaptureSession
+
+    func makeUIView(context: Context) -> PreviewUIView {
+        let view = PreviewUIView()
+        view.session = session
+        return view
     }
-    
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: CameraView
-        
-        init(_ parent: CameraView) {
-            self.parent = parent
+
+    func updateUIView(_ uiView: PreviewUIView, context: Context) {}
+
+    class PreviewUIView: UIView {
+        override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
+        var previewLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
+
+        var session: AVCaptureSession? {
+            didSet { previewLayer.session = session }
         }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                parent.capturedImage = image
-            }
-            parent.dismiss()
-        }
-        
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.dismiss()
+
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            previewLayer.videoGravity = .resizeAspectFill
+            previewLayer.frame = bounds
         }
     }
 }

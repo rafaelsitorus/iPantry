@@ -10,8 +10,7 @@ import SwiftUI
 struct MenuListView: View {
     let menuItems: [MenuItem]
     let capturedImage: UIImage?
-    
-    @Environment(\.dismiss) var dismiss
+    @Binding var path: NavigationPath
     
     // Color palette for cards
     private let cardColors: [Color] = [
@@ -44,7 +43,7 @@ struct MenuListView: View {
                 // Menu Cards
                 LazyVStack(spacing: 16) {
                     ForEach(Array(menuItems.enumerated()), id: \.element.id) { index, item in
-                        NavigationLink(value: item) {
+                        NavigationLink(value: AppRoute.recipeDetail(item)) {
                             MenuCard(
                                 item: item,
                                 color: cardColors[index % cardColors.count],
